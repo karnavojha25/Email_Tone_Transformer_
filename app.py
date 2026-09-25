@@ -42,7 +42,7 @@ def rewrite_email(original_text: str, tone: str, api_key: str, model: str = "gpt
     )
 
     response = client.chat.completions.create(
-        model="gemini-3.8-flash",
+        model="gemini-3.6-flash",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": user_prompt},
