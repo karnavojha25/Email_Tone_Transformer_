@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Email Tone Transformer</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; max-width: 720px; margin: 40px auto; padding: 0 16px; background: #0f1115; color: #e6e6e6; }
+  h1 { font-size: 1.5rem; margin-bottom: 4px; }
+  p.sub { color: #999; margin-top: 0; font-size: 0.9rem; }
+  .note { background: #1c2230; border-left: 3px solid #4f8cff; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 20px; border-radius: 4px; }
+  label { display: block; margin-top: 14px; font-size: 0.9rem; color: #aaa; }
+  textarea, select, input { width: 100%; padding: 10px; margin-top: 4px; border-radius: 6px; border: 1px solid #333; background: #1a1d24; color: #eee; box-sizing: border-box; font-family: inherit; font-size: 0.95rem; }
+  textarea { min-height: 160px; resize: vertical; }
+  button { margin-top: 20px; padding: 10px 20px; background: #4f8cff; border: none; border-radius: 6px; color: white; font-weight: 600; cursor: pointer; font-size: 0.95rem; }
+  button:hover { background: #3d7ae0; }
+  .result, .error { margin-top: 24px; padding: 14px; border-radius: 6px; white-space: pre-wrap; word-break: break-word; font-size: 0.9rem; line-height: 1.5; }
+  .result { background: #12251a; border: 1px solid #2e6b3f; }
+  .error { background: #2a1414; border: 1px solid #7a2c2c; }
+  .result h3, .error h3 { margin-top: 0; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8fbf9f; }
+  .error h3 { color: #d98a8a; }
+  a { color: #4f8cff; }
+</style>
+</head>
+<body>
+  <h1>Email Tone Transformer</h1>
+  <p class="sub">Rewrite any email in a different tone using Google Gemini.</p>
+
+  <div class="note">
+    Paste your own free <a href="https://aistudio.google.com/app/apikey" target="_blank">Gemini API key</a> below.
+    It is used only for this request and is never stored or logged.
+  </div>
+
+  <form action="/transform" method="post">
+    <label>Original Email</label>
+    <textarea name="email_text" placeholder="Paste the email you want to rewrite..." required>{{ original }}</textarea>
+
+    <label>Target Tone</label>
+    <select name="tone">
+      {% for t in tones %}
+        <option value="{{ t }}" {% if t == selected_tone %}selected{% endif %}>{{ t }}</option>
+      {% endfor %}
+    </select>
+
+    <label>Gemini API Key</label>
+    <input type="password" name="api_key" placeholder="AIza..." required>
+
+    <button type="submit">Transform Email</button>
+  </form>
+
+  {% if result %}
+  <div class="result">
+    <h3>Rewritten Email</h3>{{ result }}
+  </div>
+  {% endif %}
+
+  {% if error %}
+  <div class="error">
+    <h3>Error</h3>{{ error }}
+  </div>
+  {% endif %}
+</body>
+</html>
